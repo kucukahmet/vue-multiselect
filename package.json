@@ -114,5 +114,8 @@
     "dist",
     "src",
     "index.d.ts"
-  ]
+  ],
+  "dependencies": {
+    "@vue/babel-preset-app": "^3.4.0"
+  }
 }

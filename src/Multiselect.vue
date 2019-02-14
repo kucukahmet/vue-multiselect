@@ -6,14 +6,15 @@
     @blur="searchable ? false : deactivate()"
     @keydown.self.down.prevent="pointerForward()"
     @keydown.self.up.prevent="pointerBackward()"
-    @keypress.enter.tab.stop.self="addPointerElement($event)"
+    @keypress.enter.prevent.stop.self="addPointerElement($event)"
+    @keydown.tab.prevent.stop.self="addPointerElement($event)"
     @keyup.esc="deactivate()"
     class="multiselect">
       <slot name="caret" :toggle="toggle">
         <div @mousedown.prevent.stop="toggle()" class="multiselect__select"></div>
       </slot>
       <slot name="clear" :search="search"></slot>
-      <div ref="tags" class="multiselect__tags">
+      <div ref="tags" class="multiselect__tags" :style="noBorder ? 'border: 0px !important' : ''">
         <slot
           name="selection"
           :search="search"
@@ -61,6 +62,7 @@
           @keydown.down.prevent="pointerForward()"
           @keydown.up.prevent="pointerBackward()"
           @keypress.enter.prevent.stop.self="addPointerElement($event)"
+          @keydown.tab.prevent.stop.self="addPointerElement($event)"
           @keydown.delete.stop="removeLastElement()"
           class="multiselect__input"/>
         <span
@@ -285,6 +287,10 @@ export default {
     tabindex: {
       type: Number,
       default: 0
+    },
+    noBorder: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -385,7 +391,7 @@ fieldset[disabled] .multiselect {
   width: 16px;
   height: 16px;
   border-radius: 100%;
-  border-color: #41b883 transparent transparent;
+  border-color: #1565c0 transparent transparent;
   border-style: solid;
   border-width: 2px;
   box-shadow: 0 0 0 1px transparent;
@@ -517,7 +523,7 @@ fieldset[disabled] .multiselect {
   display: block;
   padding: 8px 40px 0 8px;
   border-radius: 5px;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #1565c0;
   background: #fff;
   font-size: 14px;
 }
@@ -530,7 +536,7 @@ fieldset[disabled] .multiselect {
   margin-right: 10px;
   color: #fff;
   line-height: 1;
-  background: #41b883;
+  background: #1565c0;
   margin-bottom: 5px;
   white-space: nowrap;
   overflow: hidden;
@@ -556,13 +562,13 @@ fieldset[disabled] .multiselect {
 
 .multiselect__tag-icon:after {
   content: "×";
-  color: #266d4d;
+  color: #FFFF;
   font-size: 14px;
 }
 
 .multiselect__tag-icon:focus,
 .multiselect__tag-icon:hover {
-  background: #369a6e;
+  background: #1565c0;
 }
 
 .multiselect__tag-icon:focus:after,
@@ -582,7 +588,7 @@ fieldset[disabled] .multiselect {
   margin: 0;
   text-decoration: none;
   border-radius: 5px;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #1565c0;
   cursor: pointer;
 }
 
@@ -616,7 +622,7 @@ fieldset[disabled] .multiselect {
 }
 
 .multiselect__placeholder {
-  color: #adadad;
+  color: #1565c0;
   display: inline-block;
   margin-bottom: 10px;
   padding-top: 2px;
@@ -626,6 +632,25 @@ fieldset[disabled] .multiselect {
   display: none;
 }
 
+.multiselect__content-wrapper::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
+  background-color: #F5F5F5;
+  border-radius: 5px;
+}
+
+.multiselect__content-wrapper::-webkit-scrollbar
+{
+  width: 5px;
+  background-color: #F5F5F5;
+}
+
+.multiselect__content-wrapper::-webkit-scrollbar-thumb
+{
+  background-color: #CCCCCC;
+  border-radius: 5px;
+}
+
 .multiselect__content-wrapper {
   position: absolute;
   display: block;
@@ -633,7 +658,7 @@ fieldset[disabled] .multiselect {
   width: 100%;
   max-height: 240px;
   overflow: auto;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #1565c0;
   border-top: none;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -657,7 +682,7 @@ fieldset[disabled] .multiselect {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   border-bottom: none;
-  border-top: 1px solid #e8e8e8;
+  border-top: 1px solid #1565c0;
 }
 
 .multiselect__content::webkit-scrollbar {
@@ -692,14 +717,14 @@ fieldset[disabled] .multiselect {
 }
 
 .multiselect__option--highlight {
-  background: #41b883;
+  background: #1565c0;
   outline: none;
   color: white;
 }
 
 .multiselect__option--highlight:after {
   content: attr(data-select);
-  background: #41b883;
+  background: #1565c0;
   color: white;
 }
 
